@@ -2440,6 +2440,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
@@ -2735,6 +2741,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     borrar_imagen: function borrar_imagen(value) {
       var indice = this.post.imagenes.indexOf(value);
       if (indice != -1) this.post.imagenes.splice(indice, 1);
+    },
+    createImage: function createImage(file) {
+      var _this6 = this;
+
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        _this6.post.imagen_miniatura = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    },
+    // removeImage() {
+    //     this.post.imagen_miniatura = null
+    // },
+    onFileChange: function onFileChange(e) {
+      // this.message = ''
+      console.log('generamos la imagen');
+      this.selectedFile = e.target.files[0];
+      this.createImage(this.selectedFile);
+    },
+    onFileChanges: function onFileChanges(e) {
+      // this.message = ''
+      console.log('generamos la imagen');
+      this.selectedFiles = e.target.files[0];
+      this.createImages(this.selectedFiles);
+    },
+    createImages: function createImages(file) {
+      var _this7 = this;
+
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        // this.post.imagen_miniatura = e.target.result
+        _this7.post.imagenes.push({
+          id: 0,
+          imgSrc: e.target.result
+        });
+      };
+
+      reader.readAsDataURL(file);
     }
   },
   computed: {
@@ -66090,7 +66137,7 @@ var render = function() {
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-body" }, [
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col col-12 text-right mb-4" }, [
+          _c("div", { staticClass: "mb-4 text-right col col-12" }, [
             _c("div", { staticClass: "row" }, [
               _vm._m(0),
               _vm._v(" "),
@@ -66143,7 +66190,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "modal-body" }, [
                         _c("form", [
-                          _c("div", { staticClass: "form-group text-left" }, [
+                          _c("div", { staticClass: "text-left form-group" }, [
                             _c("label", { attrs: { for: "titulo" } }, [
                               _vm._v("Titulo")
                             ]),
@@ -66181,7 +66228,7 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "form-group text-left" },
+                            { staticClass: "text-left form-group" },
                             [
                               _c("label", { attrs: { for: "detalle" } }, [
                                 _vm._v("Detalle")
@@ -66204,7 +66251,7 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
-                          _c("div", { staticClass: "form-group text-left" }, [
+                          _c("div", { staticClass: "text-left form-group" }, [
                             _c("label", { attrs: { for: "categoria" } }, [
                               _vm._v("Categoria")
                             ]),
@@ -66271,50 +66318,15 @@ var render = function() {
                           _c("div", { staticClass: "row" }, [
                             _vm._m(2),
                             _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "col col-4" },
-                              [
-                                _c("croppa", {
-                                  attrs: {
-                                    width: 150,
-                                    height: 150,
-                                    "canvas-color": "default",
-                                    placeholder: "Escoja una imagen",
-                                    "placeholder-font-size": 0,
-                                    "placeholder-color": "default",
-                                    accept: "image/*",
-                                    "file-size-limit": 0,
-                                    quality: 2,
-                                    "zoom-speed": 3
-                                  },
-                                  model: {
-                                    value: _vm.myCroppa,
-                                    callback: function($$v) {
-                                      _vm.myCroppa = $$v
-                                    },
-                                    expression: "myCroppa"
-                                  }
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col col-2" }, [
+                            _c("div", { staticClass: "col col-4" }, [
                               _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.generateImage()
-                                    }
-                                  }
-                                },
+                                "div",
+                                { staticClass: "text-left form-group" },
                                 [
-                                  _c("i", {
-                                    staticClass: "fas fa-arrow-circle-right"
+                                  _c("input", {
+                                    staticClass: "form-control",
+                                    attrs: { type: "file" },
+                                    on: { change: _vm.onFileChange }
                                   })
                                 ]
                               )
@@ -66327,7 +66339,7 @@ var render = function() {
                                       _c("div", { staticClass: "row" }, [
                                         _c(
                                           "div",
-                                          { staticClass: "col-10 text-left" },
+                                          { staticClass: "text-left col-10" },
                                           [_vm._v("Miniatura")]
                                         ),
                                         _vm._v(" "),
@@ -66374,65 +66386,26 @@ var render = function() {
                             [
                               _vm._m(3),
                               _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "col col-6" },
-                                [
-                                  _c("croppa", {
-                                    attrs: {
-                                      width: 350,
-                                      height: 250,
-                                      "canvas-color": "default",
-                                      placeholder: "Escoja una imagen",
-                                      "placeholder-font-size": 0,
-                                      "placeholder-color": "default",
-                                      accept: "image/*",
-                                      "file-size-limit": 0,
-                                      quality: 2,
-                                      "zoom-speed": 3
-                                    },
-                                    model: {
-                                      value: _vm.myCroppa1,
-                                      callback: function($$v) {
-                                        _vm.myCroppa1 = $$v
-                                      },
-                                      expression: "myCroppa1"
-                                    }
-                                  })
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                { staticClass: "col col-6 text-left" },
-                                [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-primary",
-                                      attrs: { type: "button" },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.generateImagenes()
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fas fa-arrow-circle-right"
-                                      })
-                                    ]
-                                  )
-                                ]
-                              ),
+                              _c("div", { staticClass: "col col-6" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "text-left form-group" },
+                                  [
+                                    _c("input", {
+                                      staticClass: "form-control",
+                                      attrs: { type: "file" },
+                                      on: { change: _vm.onFileChanges }
+                                    })
+                                  ]
+                                )
+                              ]),
                               _vm._v(" "),
                               _c("hr"),
                               _vm._v(" "),
                               _vm.post.imagenes.length > 0
                                 ? _c(
                                     "div",
-                                    { staticClass: "col-12 text-left" },
+                                    { staticClass: "text-left col-12" },
                                     [_c("h4", [_vm._v("Imagenes agregadas")])]
                                   )
                                 : _vm._e(),
@@ -66443,7 +66416,7 @@ var render = function() {
                               ) {
                                 return _c(
                                   "div",
-                                  { key: clave, staticClass: "col col-4 mt-1" },
+                                  { key: clave, staticClass: "mt-1 col col-6" },
                                   [
                                     imagen.imgSrc
                                       ? _c("div", { staticClass: "card" }, [
@@ -66459,7 +66432,7 @@ var render = function() {
                                                     "div",
                                                     {
                                                       staticClass:
-                                                        "col-10 text-left"
+                                                        "text-left col-10"
                                                     },
                                                     [
                                                       _vm._v(
@@ -66560,7 +66533,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col col-12 text-right" }, [
+          _c("div", { staticClass: "text-right col col-12" }, [
             _c(
               "table",
               {
@@ -66671,7 +66644,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col col-10 text-left" }, [
+    return _c("div", { staticClass: "text-left col col-10" }, [
       _c("h4", [_vm._v("Listado de Post")])
     ])
   },
@@ -66704,7 +66677,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col col-12 text-left" }, [
+    return _c("div", { staticClass: "text-left col col-12" }, [
       _c("label", { attrs: { for: "miniatura" } }, [
         _vm._v("Miniatura "),
         _c("span", { staticClass: "text-danger" }, [_vm._v("(150x150)")])
@@ -66715,7 +66688,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col col-12 text-left" }, [
+    return _c("div", { staticClass: "text-left col col-12" }, [
       _c("label", { attrs: { for: "imagenes" } }, [
         _vm._v("Imagenes "),
         _c("span", { staticClass: "text-danger" }, [_vm._v("(350x250)")])

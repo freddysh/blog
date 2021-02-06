@@ -7,6 +7,7 @@ use App\Models\Imagen;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as IImage;
 
 class PostController extends Controller
 {
@@ -67,8 +68,11 @@ class PostController extends Controller
         if ($imagen) {
             $imagen_explode = explode(',', $imagen);
             $imagen_decode = base64_decode($imagen_explode[1]);
+            $photo = IImage::make($imagen)
+            ->resize(150, 150, function ($constraint) { $constraint->aspectRatio(); } )
+            ->encode('jpg');
             $src = 'miniatura_' . $objeto->id . '.jpg';
-            Storage::disk('post')->put($src,  $imagen_decode);
+            Storage::disk('post')->put($src, $photo);
             $objeto->imagen_miniatura=$src;
             $objeto->save();
         }
@@ -83,8 +87,11 @@ class PostController extends Controller
                 $img->save();
                 $imagen_explode = explode(',', $imagen_);
                 $imagen_decode = base64_decode($imagen_explode[1]);
+                $photo = IImage::make($imagen_)
+                    ->resize(350, 250, function ($constraint) { $constraint->aspectRatio(); } )
+                    ->encode('jpg');
                 $src = 'post_' . $objeto->id . '.jpg';
-                Storage::disk('post')->put($src,  $imagen_decode);
+                Storage::disk('post')->put($src,  $photo);
 
                 $img->nombre=$src;
                 $img->save();
@@ -102,6 +109,8 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        $datos= Post::with(['user','categoria','imagenes'])->where('id',$id)->get()->first();
+        return $datos;
     }
 
     /**
@@ -149,7 +158,10 @@ class PostController extends Controller
                 if(count($imagen_explode)>1){
                     $imagen_decode = base64_decode($imagen_explode[1]);
                     $src = 'miniatura_' . $objeto->id . '.jpg';
-                    Storage::disk('post')->put($src,  $imagen_decode);
+                    $photo = IImage::make($imagen)
+                    ->resize(150, 150, function ($constraint) { $constraint->aspectRatio(); } )
+                    ->encode('jpg');
+                    Storage::disk('post')->put($src,  $photo);
                     $objeto->imagen_miniatura=$src;
                     $objeto->save();
                 }
@@ -195,7 +207,10 @@ class PostController extends Controller
                             $img->save();
                             $imagen_decode = base64_decode($imagen_explode[1]);
                             $src = 'post_' . $img->id . '.jpg';
-                            Storage::disk('post')->put($src,  $imagen_decode);
+                            $photo = IImage::make($imagen_)
+                            ->resize(350, 250, function ($constraint) { $constraint->aspectRatio(); } )
+                            ->encode('jpg');
+                            Storage::disk('post')->put($src,  $photo);
                             $img->nombre=$src;
                             $img->save();
                         }

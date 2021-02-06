@@ -4,9 +4,9 @@
         <!-- <div class="card-header"> <h3>Listado de Post</h3></div> -->
         <div class="card-body">
             <div class="row">
-                <div class="col col-12 text-right mb-4">
+                <div class="mb-4 text-right col col-12">
                     <div class="row">
-                        <div class="col col-10 text-left">
+                        <div class="text-left col col-10">
                             <h4>Listado de Post</h4>
                         </div>
                         <div class="col col-2">
@@ -27,15 +27,15 @@
                             </div>
                             <div class="modal-body">
                                 <form>
-                                    <div class="form-group text-left">
+                                    <div class="text-left form-group">
                                         <label for="titulo">Titulo</label>
                                         <input type="text" class="form-control" id="titulo" placeholder="Ingrese el titulo" v-model="post.titulo">
                                     </div>
-                                    <div class="form-group text-left">
+                                    <div class="text-left form-group">
                                         <label for="detalle">Detalle</label>
                                         <ckeditor :editor="editor" v-model="post.detalle" :config="editorConfig"></ckeditor>
                                     </div>
-                                    <div class="form-group text-left">
+                                    <div class="text-left form-group">
                                         <label for="categoria">Categoria</label>
                                         <select class="form-control" id="categoria" v-model="post.categoria_id">
                                             <option value="0">Ingrese una opcion</option>
@@ -44,11 +44,14 @@
                                     </div>
                                     <hr>
                                     <div class="row">
-                                        <div class="col col-12 text-left">
+                                        <div class="text-left col col-12">
                                             <label for="miniatura">Miniatura <span class="text-danger">(150x150)</span></label>
                                         </div>
                                         <div class="col col-4">
-                                            <croppa v-model="myCroppa"
+                                            <div class="text-left form-group">
+                                                <input type="file" class="form-control" @change="onFileChange">
+                                            </div>
+                                            <!-- <croppa v-model="myCroppa"
                                                 :width="150"
                                                 :height="150"
                                                 :canvas-color="'default'"
@@ -59,16 +62,16 @@
                                                 :file-size-limit="0"
                                                 :quality="2"
                                                 :zoom-speed="3"
-                                            ></croppa>
+                                            ></croppa>-->
                                         </div>
-                                        <div class="col col-2">
+                                        <!--<div class="col col-2 ">
                                             <button type="button" class="btn btn-primary" @click="generateImage()"> <i class="fas fa-arrow-circle-right"></i> </button>
-                                        </div>
+                                        </div>-->
                                         <div class="col col-4">
                                             <div v-if="post.imagen_miniatura"  class="card">
                                                 <div class="card-header">
                                                     <div class="row">
-                                                        <div class="col-10 text-left">Miniatura</div>
+                                                        <div class="text-left col-10">Miniatura</div>
                                                         <div class="col-2">
                                                             <button type="button" class="btn btn-danger" @click="borrar_miniatura()"><i class="fas fa-trash-alt"></i></button>
                                                         </div>
@@ -82,11 +85,14 @@
                                     </div>
                                     <hr>
                                     <div class="row">
-                                        <div class="col col-12 text-left">
+                                        <div class="text-left col col-12">
                                             <label for="imagenes">Imagenes <span class="text-danger">(350x250)</span></label>
                                         </div>
                                         <div class="col col-6">
-                                            <croppa v-model="myCroppa1"
+                                            <div class="text-left form-group">
+                                                <input type="file" class="form-control" @change="onFileChanges">
+                                            </div>
+                                            <!--<croppa v-model="myCroppa1"
                                                 :width="350"
                                                 :height="250"
                                                 :canvas-color="'default'"
@@ -97,18 +103,18 @@
                                                 :file-size-limit="0"
                                                 :quality="2"
                                                 :zoom-speed="3"
-                                            ></croppa>
+                                            ></croppa>-->
                                         </div>
-                                        <div class="col col-6 text-left" >
+                                        <!--<div class="text-left col col-6" >
                                             <button type="button" class="btn btn-primary" @click="generateImagenes()"><i class="fas fa-arrow-circle-right"></i></button>
-                                        </div>
+                                        </div>-->
                                         <hr>
-                                        <div v-if="post.imagenes.length>0" class="col-12 text-left"><h4>Imagenes agregadas</h4></div>
-                                        <div v-for="(imagen,clave) in post.imagenes" :key="clave" class="col col-4 mt-1">
+                                        <div v-if="post.imagenes.length>0" class="text-left col-12"><h4>Imagenes agregadas</h4></div>
+                                        <div v-for="(imagen,clave) in post.imagenes" :key="clave" class="mt-1 col col-6">
                                             <div v-if="imagen.imgSrc" class="card">
                                                 <div class="card-header">
                                                     <div class="row">
-                                                        <div class="col-10 text-left">Imagen {{clave+1}}</div>
+                                                        <div class="text-left col-10">Imagen {{clave+1}}</div>
                                                         <div class="col-2">
                                                             <button type="button" class="btn btn-danger" @click="borrar_imagen(imagen)"><i class="fas fa-trash-alt"></i></button>
                                                         </div>
@@ -130,8 +136,8 @@
                     </div>
                     </div>
                 </div>
-                <div class="col col-12 text-right">
-                    <!-- <div class="form-group text-left">
+                <div class="text-right col col-12">
+                    <!-- <div class="text-left form-group">
                         <input type="text" class="form-control" id="buscar" placeholder="Ingrese el titulo" v-model="searchLangs">
                     </div> -->
                 <table class="table table-striped table-hover table-condensed">
@@ -356,7 +362,35 @@ export default {
             var indice = this.post.imagenes.indexOf(value);
             if (indice != -1)
                 this.post.imagenes.splice(indice, 1);
-        }
+        },
+        createImage(file) {
+            const reader = new FileReader()
+            reader.onload = (e) => { this.post.imagen_miniatura = e.target.result }
+            reader.readAsDataURL(file)
+        },
+        // removeImage() {
+        //     this.post.imagen_miniatura = null
+        // },
+        onFileChange(e) {
+            // this.message = ''
+            console.log('generamos la imagen');
+            this.selectedFile = e.target.files[0]
+            this.createImage(this.selectedFile)
+        },
+        onFileChanges(e) {
+            // this.message = ''
+            console.log('generamos la imagen');
+            this.selectedFiles = e.target.files[0]
+            this.createImages(this.selectedFiles)
+        },
+        createImages(file) {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                // this.post.imagen_miniatura = e.target.result
+                this.post.imagenes.push({id:0,imgSrc:e.target.result})
+                }
+            reader.readAsDataURL(file)
+        },
     },
     computed: {
     fLangs () {
